@@ -1,0 +1,9 @@
+{
+  "common": {
+    "home": "首页",
+    "about": "关于",
+    "tobeCoded": "待开发",
+    "signIn": "登录",
+    "signUp": "注册"
+  }
+}
