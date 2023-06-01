@@ -1,26 +1,63 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+import { langs } from '@/locales'
+import { useLocaleStore } from '@/stores/locale.js'
+import zh from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
+
+const value = ref(new Date())
+const locales = {
+  zh: zh,
+  en: en
+}
+const useLocale = useLocaleStore()
+console.log(useLocale)
+const curLocale = useLocale.locale
+console.log(curLocale)
+const currentLan = ref(langs.find((cur) => cur.key === curLocale)?.title || '')
+
+function handleCommand(command) {
+  currentLan.value = command.title
+  // curLocale = command.key
+  // useLocale.locale = command.key
+  useLocale.setLocale(command.key)
+  console.log(useLocale.locale)
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <el-config-provider :locale="locales[useLocale.locale]">
+    <header>
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <div class="wrapper">
+        <HelloWorld msg="You did it!" />
+        <nav>
+          <RouterLink to="/">{{$t('common.home')}}</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+      </div>
+      <el-calendar v-model="value" />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link">
+          {{ currentLan }}
+        </span>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item v-for="(lang,index) in langs" :command="lang" :key="index">{{ lang.title }}</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  </el-config-provider>
 </template>
 
-<style scoped>
+<style  lang="scss" scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    // "target": "ES6",
+    // "module": "commonjs",
+    // "jsx": "preserve",
+    // "allowSyntheticDefaultImports": true,
+    // "lib": ["es6", "dom"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+  // "typeAcquisition": {
+  //   "enable": true
+  // }
+}
